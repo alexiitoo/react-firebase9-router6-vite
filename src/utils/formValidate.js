@@ -21,9 +21,9 @@ export const formValidate=(getValues)=>{
         },
 
         },
-    validateEquals(getValues){
+    validateEquals(value){
         return{
-            equals: v => v === getValues("password") || "No coiciden las contrasenas",
+            equals: (v) => v === value || "No coiciden las contrasenas",
        // message:"No coiciden las contrasenas"
         };
     }

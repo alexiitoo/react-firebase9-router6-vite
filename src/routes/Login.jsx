@@ -6,6 +6,8 @@ import { erroresFirebase } from "../utils/erroresFirebase";
 import FormError from "../components/FormError";
 import FormInput from "../components/FormInput";
 import { formValidate } from "../utils/formValidate";
+import Title from "../components/Title";
+import Button from "../components/Button";
 
 
 
@@ -38,9 +40,9 @@ const Login =() => {
             } 
             catch (error) {
                 console.log(error.code);
-                setError("firebase",{
-                    message: erroresFirebase(error.code),
-                });
+                const{code,message} = erroresFirebase(error.code)
+                setError(code,{message,});
+                
                 
                
             };
@@ -52,23 +54,27 @@ const Login =() => {
 
     return (
         <>
-        <h1> Login</h1>
-        <FormError error={errors.firebase}/>
+        <Title text="Login"/>
+       
+        
         <form onSubmit={handleSubmit(onSubmit)}>
-
         <FormInput
+        label="Ingresa tu correo"
             type="email"
             placeholder="Ingrese email"
             {...register("email",{
                 required,
                 pattern:patternEmail
          })}
+         error={errors.email}
             > 
+            
             <FormError error={errors.email}/>
                 
             </FormInput>
 
             <FormInput
+            label="Ingresa tu contraseña"
             type="Password" 
             placeholder="Ingrese Contrasena"
             {...register("password",{
@@ -77,12 +83,14 @@ const Login =() => {
             validate:validatetrim,
             
         })}
+        error={errors.password}
             > 
+
             <FormError error={errors.password}/>
             </FormInput>
            
 
-            <button type="submit">Entrar </button>
+            <Button text="Login" type="submit" />
 
 
         </form>

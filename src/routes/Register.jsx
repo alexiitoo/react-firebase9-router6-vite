@@ -2,8 +2,10 @@ import { async } from "@firebase/util";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import Button from "../components/Button";
 import FormError from "../components/FormError";
 import FormInput from "../components/FormInput";
+import Title from "../components/Title";
 import { UserContext } from "../context/UserProvider";
 import { erroresFirebase } from "../utils/erroresFirebase";
 import { formValidate } from "../utils/formValidate";
@@ -38,9 +40,8 @@ const Register=() =>{
         } 
         catch (error) {
             console.log(error.code);
-            setError("firebase",{
-                message: erroresFirebase(error.code),
-            });
+            const{code,message} = erroresFirebase(error.code)
+            setError(code,{message,});
             
            
         };
@@ -50,9 +51,9 @@ const Register=() =>{
 
         <>
 
-        <h1>Register</h1>
+       <Title text="Register"/>
        
-        <FormError error={errors.firebase}/>
+        
         <form onSubmit={handleSubmit(onSubmit)}>
             <FormInput
             type="email"
@@ -61,6 +62,8 @@ const Register=() =>{
                 required,
                 pattern:patternEmail
          })}
+         label="Ingresa tu correo"
+         error={errors.email}
             > 
             <FormError error={errors.email}/>
                 
@@ -77,6 +80,8 @@ const Register=() =>{
             validate:validatetrim,
             
         })}
+        label="Ingresa tu contraseña"
+        error={errors.password}
             > 
             <FormError error={errors.password}/>
             </FormInput>
@@ -86,11 +91,13 @@ const Register=() =>{
             
             <FormInput
             type="Password" 
-            placeholder="Ingrese Contrasena"
+            placeholder="Ingrese contraseña"
             {...register("repassword",{
-                validate: validateEquals(getValues),
+                validate: validateEquals(getValues("password")),
 
             })}
+            label="Repite contraseña"
+            error={errors.repassword}
             > 
 
                 <FormError error={errors.repassword}/>
@@ -101,8 +108,7 @@ const Register=() =>{
                 
             
 
-            <button type="submit">Register </button>
-
+            <Button text="Register" type="submit"/>
 
         </form>
         
